@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: #f3f3f3;
+    font-family: "Amazon Ember", Arial, sans-serif;
+  }
+}

@@ -10,54 +10,58 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password !== form.confirm) { toast.error("Passwords don't match"); return; }
+    if (form.password !== form.confirm) { toast.error("Passwords do not match"); return; }
     if (form.password.length < 6) { toast.error("Password must be at least 6 characters"); return; }
     const res = await register(form.name, form.email, form.password);
-    if (res.success) {
-      toast.success("Account created!");
-      navigate("/");
-    } else {
-      toast.error(res.message);
-    }
+    if (res.success) { toast.success("Account created!"); navigate("/"); }
+    else toast.error(res.message);
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-800 mb-1">Create account</h1>
-        <p className="text-sm text-gray-500 mb-6">Join ShopNow today</p>
+    <div className="bg-white min-h-screen flex flex-col items-center pt-8 px-4">
+      <Link to="/" className="text-3xl font-extrabold text-gray-900 mb-6">
+        shop<span className="text-[#FF9900]">Now</span>
+      </Link>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="w-full max-w-sm border border-gray-300 rounded p-6">
+        <h1 className="text-2xl font-medium text-gray-900 mb-4">Create account</h1>
+        <form onSubmit={handleSubmit} className="space-y-3">
           {[
-            { label: "Full Name", key: "name", type: "text", placeholder: "John Doe" },
-            { label: "Email", key: "email", type: "email", placeholder: "you@example.com" },
-            { label: "Password", key: "password", type: "password", placeholder: "Min 6 characters" },
-            { label: "Confirm Password", key: "confirm", type: "password", placeholder: "Repeat password" },
+            { label: "Your name", key: "name", type: "text", placeholder: "First and last name" },
+            { label: "Email", key: "email", type: "email", placeholder: "" },
+            { label: "Password", key: "password", type: "password", placeholder: "At least 6 characters" },
+            { label: "Re-enter password", key: "confirm", type: "password", placeholder: "" },
           ].map(({ label, key, type, placeholder }) => (
             <div key={key}>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+              <label className="block text-sm font-bold text-gray-900 mb-1">{label}</label>
               <input
                 type={type} required
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                placeholder={placeholder}
+                className="w-full border border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF9900] focus:border-[#FF9900]"
                 value={form[key]}
                 onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                placeholder={placeholder}
               />
             </div>
           ))}
           <button
             type="submit" disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition disabled:opacity-60"
+            className="w-full bg-[#FFD814] hover:bg-[#F7CA00] text-gray-900 font-semibold py-2 rounded border border-[#FCD200] text-sm transition disabled:opacity-60"
           >
-            {loading ? "Creating..." : "Create Account"}
+            {loading ? "Creating..." : "Create your ShopNow account"}
           </button>
         </form>
 
-        <p className="text-sm text-center text-gray-500 mt-5">
-          Already have an account?{" "}
-          <Link to="/login" className="text-indigo-600 font-medium hover:underline">Sign in</Link>
+        <p className="text-xs text-gray-600 mt-3 leading-relaxed">
+          By creating an account, you agree to ShopNow's{" "}
+          <span className="text-[#007185] hover:underline cursor-pointer">Conditions of Use</span> and{" "}
+          <span className="text-[#007185] hover:underline cursor-pointer">Privacy Notice</span>.
         </p>
       </div>
+
+      <p className="text-sm text-gray-600 mt-4">
+        Already have an account?{" "}
+        <Link to="/login" className="text-[#007185] hover:text-[#C7511F] hover:underline">Sign in →</Link>
+      </p>
     </div>
   );
 }
