@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
 dotenv.config();
 
@@ -17,6 +18,9 @@ app.use(session({
   secret: process.env.SESSION_SECRET || "cwsms_secret",
   resave: false,
   saveUninitialized: false,
+  store: process.env.MONGO_URI
+    ? MongoStore.create({ mongoUrl: process.env.MONGO_URI })
+    : undefined, // falls back to MemoryStore in dev when no MONGO_URI
   cookie: { httpOnly: true, maxAge: 8 * 60 * 60 * 1000 }, // 8 hours
 }));
 
