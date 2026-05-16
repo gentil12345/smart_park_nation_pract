@@ -29,11 +29,18 @@ app.use("/api/payments",        require("./routes/payments"));
 
 app.get("/api/health", (req, res) => res.json({ status: "ok", app: "CWSMS" }));
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("MongoDB connected — CWSMS database");
-    app.listen(process.env.PORT, () =>
-      console.log(`CWSMS Backend running on http://localhost:${process.env.PORT}`)
-    );
-  })
-  .catch((err) => console.error("DB Error:", err));
+const PORT = process.env.PORT || 10000;
+
+// Start server immediately so Render doesn't kill the process
+app.listen(PORT, () =>
+  console.log(`CWSMS Backend running on port ${PORT}`)
+);
+
+// Connect to MongoDB
+if (!process.env.MONGO_URI) {
+  console.error("ERROR: MONGO_URI environment variable is not set.");
+} else {
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("MongoDB connected — CWSMS database"))
+    .catch((err) => console.error("DB connection error:", err));
+}
