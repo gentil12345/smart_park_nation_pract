@@ -1,0 +1,28 @@
+services:
+  # Frontend - Static Site
+  - type: web
+    name: smart-park-frontend
+    runtime: static
+    buildCommand: cd frontend-project && npm install && npm run build
+    staticPublishPath: frontend-project/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  # Backend - Web Service
+  - type: web
+    name: smart-park-backend
+    runtime: node
+    rootDir: backend-project
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: PORT
+        value: 10000

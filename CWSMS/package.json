@@ -1,0 +1,11 @@
+{
+  "name": "smart-park-nation",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend-project && npm install && npm run build",
+    "start": "cd backend-project && npm install && node server.js",
+    "install:frontend": "cd frontend-project && npm install",
+    "install:backend": "cd backend-project && npm install"
+  }
+}
